@@ -27,7 +27,7 @@
     "cross-env": "^6.0.3",
     "express": "^4.17.1",
     "figlet": "^1.4.0",
-    "forever": "^3.0.0",
+    "forever": "^3.0.2",
     "jsonschema": "^1.2.7",
     "typescript": "^3.9.5",
     "winston": "^3.3.3"
@@ -50,6 +50,6 @@
       "src/**/*"
     ],
     "ext": "ts json",
-    "exec": "clear && cross-env NODE_ENV=development ts-node -T ./src/app.ts"
+    "exec": "clear && node .\\node_modules\\cross-env\\src\\bin\\cross-env.js NODE_ENV=development node .\\node_modules\\ts-node\\dist\\bin.js -T ./src/app.ts"
   }
 }
