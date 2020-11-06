@@ -7,7 +7,8 @@ interface ArchiveStructure {
   version: string,
   versionInt: number,
   dirPath: string,
-  exePath: string
+  exePath: string,
+  changelogPath: string
 }
 
 export default class Archive {
@@ -34,16 +35,17 @@ export default class Archive {
         const fileName = fileNames[i];
         const dirPath = path.join(this.path, fileName);
         const exePath = path.join(dirPath, "/DW Piper Setup.exe");
+        const changelogPath = path.join(dirPath, "/changelog.json");
 
         const fileNameParts = fileName.split(".");
         const filteredNameParts = fileNameParts.filter(part => !Number.isNaN(Number(part)));
         if(filteredNameParts.length !== 3) {
           logger.error(`[Archive Manager]  | INVALID NAME: '${fileName}'`);
-        } else if(!fs.lstatSync(dirPath).isDirectory() || !fs.existsSync(exePath)) {
+        } else if(!fs.lstatSync(dirPath).isDirectory() || !fs.existsSync(exePath) || !fs.existsSync(changelogPath)) {
           logger.error(`[Archive Manager]  | INVALID STRUCTURE: '${fileName}'`);
         } else {
           const fileNameInt = Number(filteredNameParts.join(""));
-          this.archive.push({ version: fileName, versionInt: fileNameInt, dirPath, exePath });
+          this.archive.push({ version: fileName, versionInt: fileNameInt, dirPath, exePath, changelogPath });
         }
         
       }
