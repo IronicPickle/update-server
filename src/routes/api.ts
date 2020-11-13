@@ -1,4 +1,5 @@
-import fs from "fs"
+import fs from "fs";
+import path from "path";
 import express, { Request, Response, NextFunction } from "express";
 import wrap from "../utils/wrap";
 import Archive from "../utils/Archive"
@@ -24,7 +25,9 @@ router.get("/download", wrap(async (req: Request, res: Response, next: NextFunct
 
   if(archiveEntry == null) return res.status(404).send();
 
-  res.download(archiveEntry.exePath, "DW Piper Setup.exe")
+  const fileName = path.basename(archiveEntry.exePath);
+
+  res.download(archiveEntry.exePath, fileName)
 
 }));
 

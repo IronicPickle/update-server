@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import glob from "glob-promise";
 import { backendConfig } from "../utils/BackendConfig"
 import { logger } from "../app";
 
@@ -17,7 +18,7 @@ export default class Archive {
 
   public static load() {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
 
       if(!require.main) return reject("Couldn't get root directory");
       const rootDir = path.dirname(require.main?.filename);
@@ -34,8 +35,11 @@ export default class Archive {
       for(const i in fileNames) {
         const fileName = fileNames[i];
         const dirPath = path.join(this.path, fileName);
-        const exePath = path.join(dirPath, "/DW Piper Setup.exe");
         const changelogPath = path.join(dirPath, "/changelog.json");
+        let exePath = "";
+
+        const exes = await glob(path.join(dirPath, "/*Setup.exe"));
+        if(exes[0] != null) exePath = exes[0];
 
         const fileNameParts = fileName.split(".");
         const filteredNameParts = fileNameParts.filter(part => !Number.isNaN(Number(part)));
